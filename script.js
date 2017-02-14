@@ -29,6 +29,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
   let firstNav
   let lastNav
   let fix
+  let sectionCoords = []
 
   function resizeNav () {
     navItem = Array.from(aNav)
@@ -36,6 +37,10 @@ document.addEventListener("DOMContentLoaded", ()=> {
     lastNav = navItem[navItem.length-1].offsetLeft + navItem[navItem.length-1].clientWidth
     fix = navItem[0].clientWidth
     navLocater()
+    sectionCoords = []
+    sections.forEach(section => {
+      sectionCoords.push(section.offsetTop)
+    })
   }
 
 
@@ -67,18 +72,8 @@ document.addEventListener("DOMContentLoaded", ()=> {
 
   function navClickTransition (e) {
     e.preventDefault()
-    const targetName = e.target.name
-    sections.forEach(section => {
-      let scrollingTo
-      if (section.className === targetName) {
-        if (targetName === 'one') {
-          scrollingTo = 0
-        } else {
-          scrollingTo = section.offsetTop
-        }
-      scrollTo(document.body, scrollingTo, 1250)
-      }
-    })
+    const targetValue = parseInt(e.target.name)
+    scrollTo(document.body, sectionCoords[targetValue], 1250)
   }
 
 //credit for scrolling function to http://stackoverflow.com/questions/8917921/cross-browser-javascript-not-jquery-scroll-to-top-animation

@@ -10,7 +10,7 @@ h1 {
   color:white;
   font-size: 7vw;
   text-shadow: 3px 4px 0 rgba(0,0,0,0.2);
-  height: 20vh;
+  height: 50vh;
 }
 
 nav {
@@ -65,7 +65,6 @@ nav a {
   color:white;
   transition:all 0.2s;
   text-transform: uppercase;
-
   width:108px;
   text-align: center;
 }
@@ -77,17 +76,17 @@ nav a {
 
 .two {
   background: red;
-  height: 100vh;
+  height: 80vh;
 }
 
 .three {
   background: green;
-  height: 100vh;
+  height: 80vh;
 }
 
 .four {
   background: blue;
-  height: 100vh;
+  height: 80vh;
 }
 
 .highlight {
