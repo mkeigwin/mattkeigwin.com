@@ -1,14 +1,18 @@
 document.addEventListener("DOMContentLoaded", ()=> {
 
   const nav = document.querySelector('#main')
+  const titlePic = document.querySelector('#titlePic')
+  const fourPic = document.querySelector('#sec4Pic')
   const underline = document.querySelector('#navBar')
   const aNav = document.querySelectorAll('#main ul li a')
   const logo = document.querySelector('.logo')
   const highlight = document.createElement('span')
+  const gallery = document.querySelector('#gallery')
+  const imgSlider = document.querySelector('#imgSlider')
+  const arrows = document.querySelectorAll('img[name="arrow"]')
   highlight.classList.add('highlight')
   document.body.append(highlight)
   const sections = document.querySelectorAll('section')
-
 
   function debounce(func, wait = 10, immediate = true) {
     var timeout;
@@ -29,35 +33,52 @@ document.addEventListener("DOMContentLoaded", ()=> {
   let firstNav
   let lastNav
   let fix
-  let sectionCoords = []
+  let sectionCoords
+  //needs to be const because need reference to where it is when not bound
+  const topOfNav = nav.offsetTop
+  let galleryWidth
+  let counter = 0
 
   function resizeNav () {
+    sectionCoords = []
+    galleryWidth = gallery.offsetWidth
+    sections.forEach(section => {
+      sectionCoords.push(section.offsetTop +.5)
+    })
     navItem = Array.from(aNav)
     firstNav = navItem[0].offsetLeft
     lastNav = navItem[navItem.length-1].offsetLeft + navItem[navItem.length-1].clientWidth
-    fix = navItem[0].clientWidth
-    navLocater()
-    sectionCoords = []
-    sections.forEach(section => {
-      sectionCoords.push(section.offsetTop)
+    const navClientWidths = []
+    navItem.forEach(nav => navClientWidths.push(nav.clientWidth))
+    const sortedClientWidth = navClientWidths.sort(function(a, b) {
+      return a - b;
+    });
+    fix = sortedClientWidth[1]
+    aNav.forEach(nav => {
+      nav.style.width = `${sortedClientWidth[sortedClientWidth.length-1] + 1}px`
     })
+    scrollLocater()
   }
 
-
-  function navLocater() {
+  function scrollLocater() {
     const navWidth = lastNav - (firstNav + fix)
     const navTop = nav.getBoundingClientRect().top + (underline.getBoundingClientRect().height*(5/6))
     const totalHeight = document.documentElement.scrollHeight - window.innerHeight
     const currentHeight = window.scrollY
     const percentThrough = (currentHeight/totalHeight).toFixed(2)
-    const navBar = navWidth*percentThrough
+    let navBar = navWidth*percentThrough
     highlight.style.transform = `translate(${navBar + firstNav}px, ${navTop}px)`;
     highlight.style.width = `${fix}px`
     highlight.style.height = `2px`
     fixNav();
+    if (currentHeight < sectionCoords[1]){
+      titlePic.style.top = `${-currentHeight}px`
+    }
+    if (currentHeight > sectionCoords[2]){
+      fourPic.style.top = `${-(currentHeight-sectionCoords[2])}px`
+    }
   }
 
-  const topOfNav = nav.offsetTop
   function fixNav(){
     if(window.scrollY >= topOfNav) {
       document.body.classList.add('fixed-nav')
@@ -72,7 +93,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
 
   function navClickTransition (e) {
     e.preventDefault()
-    const targetValue = parseInt(e.target.name)
+    const targetValue = parseInt(e.target.id)
     scrollTo(document.body, sectionCoords[targetValue], 1250)
   }
 
@@ -103,13 +124,39 @@ document.addEventListener("DOMContentLoaded", ()=> {
       return -change / 2 * (currentTime * (currentTime - 2) - 1) + start;
   }
 
+  function galleryScroll (e) {
+    const galleryNum = imgSlider.childElementCount
+    let currentLeft = (galleryWidth * (-counter))
+    if (e.target.id === 'rightArrow') {
+      counter++
 
+      // imgSlider.style.left = `${currentLeft-galleryWidth}px`
+      // if (counter = (galleryNum - 1)) {
 
+      // }
 
+      if (counter > (galleryNum - 1)) {
+        counter = 0
+        imgSlider.style.left = '0px'
+      } else {
+        imgSlider.style.left = `${currentLeft-galleryWidth}px`
+      }
+    }
+    if (e.target.id === 'leftArrow') {
+      counter--
+      if (counter < 0) {
+        counter = galleryNum
+        currentLeft = (galleryWidth * (-counter))
+        counter--
+      }
+      imgSlider.style.left = `${currentLeft+galleryWidth}px`
+    }
+  }
 
   resizeNav()
-  navLocater()
-  window.addEventListener('scroll', debounce(navLocater))
+  scrollLocater()
+  window.addEventListener('scroll', debounce(scrollLocater))
   window.addEventListener("resize", resizeNav);
   navItem.forEach(nav => nav.addEventListener('click', navClickTransition))
+  arrows.forEach(arrow => arrow.addEventListener('click', galleryScroll))
 })

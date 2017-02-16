@@ -6,24 +6,28 @@
   font-weight: 200;
 }
 
-h1 {
+#title {
   color:white;
   font-size: 7vw;
   text-shadow: 3px 4px 0 rgba(0,0,0,0.2);
-  height: 50vh;
+  height: 63vh;
+  z-index: 4;
+  position: relative;
 }
 
 nav {
-  background:black;
+  background: rgba(0, 0, 0, .3);
   top:0;
   width: 100%;
   transition:all 0.5s;
+  transition:background 1.25s;
   position: relative;
   z-index: 1;
 }
 
 body.fixed-nav nav {
   position: fixed;
+  background: black;
 }
 
 nav ul {
@@ -65,28 +69,100 @@ nav a {
   color:white;
   transition:all 0.2s;
   text-transform: uppercase;
-  width:108px;
   text-align: center;
+  border-bottom: 3px solid white
 }
 
 .one {
   background: grey;
-  height: 100vh;
+  height: 80vh;
+}
+
+#titlePic {
+  position: absolute;
+  width: 100vw;
+  height: 180vh;
+}
+article {
+  background-attachment: fixed;
 }
 
 .two {
-  background: red;
+  background: url('Pic/exPic3.jpg') no-repeat center center fixed;
+  background-size: cover;
   height: 80vh;
+
 }
 
 .three {
-  background: green;
   height: 80vh;
+  background: url('Pic/exPic2.jpg') no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#gallery {
+  height: 50vh;
+  width: 50vw;
+  position: relative;
+  overflow: hidden;
+}
+
+.galleryDiv {
+  display: inline-block;
+  height: 50vh;
+  width: 50vw;
+}
+
+#rightArrow {
+ position: absolute;
+ right: 0;
+ top: 50%;
+ transform: translateY(-50%);
+ z-index: 3;
+}
+
+#leftArrow {
+ position: absolute;
+ left: 0;
+ top: 50%;
+ transform: translateY(-50%) rotateY(180deg);
+ z-index: 3;
+}
+
+#imgSlider {
+  left: 0px;
+  transition: left 1s;
+  white-space: nowrap;
+  position: absolute;
+}
+
+.galleryDiv img{
+  height: 100%;
+  width: 100%;
+}
+
+#galleryItems {
+  height: 20vh;
+  width: 70vw;
+  background-color: red;
 }
 
 .four {
-  background: blue;
   height: 80vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+#sec4Pic {
+  position: relative;
+  display: block;
+  width: 100vw;
+  height: 163vh;
+  z-index: -1;
 }
 
 .highlight {
@@ -96,7 +172,7 @@ nav a {
   top:0;
   background:white;
   left:0;
-  z-index: 5;
+  z-index: 2;
   border-radius:20px;
   display: block;
   box-shadow: 0 0 10px rgba(0,0,0,0.2);
