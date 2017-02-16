@@ -124,39 +124,45 @@ document.addEventListener("DOMContentLoaded", ()=> {
       return -change / 2 * (currentTime * (currentTime - 2) - 1) + start;
   }
 
-  function galleryScroll (e) {
+  function galleryCounter (e) {
     const galleryNum = imgSlider.childElementCount
     let currentLeft = (galleryWidth * (-counter))
     if (e.target.id === 'rightArrow') {
       counter++
-
-      // imgSlider.style.left = `${currentLeft-galleryWidth}px`
-      // if (counter = (galleryNum - 1)) {
-
-      // }
-
-      if (counter > (galleryNum - 1)) {
-        counter = 0
-        imgSlider.style.left = '0px'
+      // make function that takes in counter #
+      imgSlider.style.left = `${currentLeft-galleryWidth}px`
+      if (counter >= (galleryNum - 1)){
+        arrows[0].style.opacity = '0'
+        setTimeout(() => {arrows[0].style.visibility = 'hidden'},300)
       } else {
-        imgSlider.style.left = `${currentLeft-galleryWidth}px`
+        arrows[1].style.visibility = 'visible'
+        arrows[1].style.opacity = '1'
       }
+      // *************
     }
     if (e.target.id === 'leftArrow') {
       counter--
-      if (counter < 0) {
-        counter = galleryNum
-        currentLeft = (galleryWidth * (-counter))
-        counter--
-      }
+      // make function that takes in counter #
       imgSlider.style.left = `${currentLeft+galleryWidth}px`
+      if (counter <= 0){
+        arrows[1].style.opacity = '0'
+        setTimeout(() => {arrows[1].style.visibility = 'hidden'},300)
+      } else {
+        arrows[0].style.visibility = 'visible'
+        arrows[0].style.opacity = '1'
+      }
+      // *************
     }
   }
+
+  // function galleryScrollTo (a) {
+
+  // }
 
   resizeNav()
   scrollLocater()
   window.addEventListener('scroll', debounce(scrollLocater))
   window.addEventListener("resize", resizeNav);
   navItem.forEach(nav => nav.addEventListener('click', navClickTransition))
-  arrows.forEach(arrow => arrow.addEventListener('click', galleryScroll))
+  arrows.forEach(arrow => arrow.addEventListener('click', debounce(galleryCounter,300)))
 })
