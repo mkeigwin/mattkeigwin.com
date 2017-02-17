@@ -13,6 +13,27 @@ document.addEventListener("DOMContentLoaded", ()=> {
   highlight.classList.add('highlight')
   document.body.append(highlight)
   const sections = document.querySelectorAll('section')
+  const imageItems = document.querySelectorAll('#imgSlider img')
+  const galleryItems = document.querySelector('#galleryItems')
+  let innerGalleryDivs //needs to be created before called
+  const galleryInfo = document.querySelectorAll('.projectDetails')
+  const innerGalleryInfo = document.querySelector('#innerGalleryInfo')
+
+  function mapGallery() {
+    const wowz = Array.from(imageItems)
+    wowz.forEach((img, i) => {
+      let imageTag = img.outerHTML
+      let node = document.createElement('div')
+      node.classList.add('indGalItem')
+      node.setAttribute("name", `${i}`);
+      node.innerHTML = imageTag
+      galleryItems.appendChild(node)
+    })
+    innerGalleryDivs = document.querySelectorAll('.indGalItem')
+    innerGalleryDivs[0].classList.add('selectedGallery')
+    innerGalleryDivs.forEach(div => div.addEventListener('click', gallerySelector))
+    galleryInfo[0].classList.add('projectDetailsShow')
+  }
 
   function debounce(func, wait = 10, immediate = true) {
     var timeout;
@@ -38,6 +59,8 @@ document.addEventListener("DOMContentLoaded", ()=> {
   const topOfNav = nav.offsetTop
   let galleryWidth
   let counter = 0
+  const visibilityTime = 300 //also need to change css transitions
+  let lastCountnum = 0
 
   function resizeNav () {
     sectionCoords = []
@@ -125,44 +148,63 @@ document.addEventListener("DOMContentLoaded", ()=> {
   }
 
   function galleryCounter (e) {
-    const galleryNum = imgSlider.childElementCount
-    let currentLeft = (galleryWidth * (-counter))
     if (e.target.id === 'rightArrow') {
       counter++
-      // make function that takes in counter #
-      imgSlider.style.left = `${currentLeft-galleryWidth}px`
-      if (counter >= (galleryNum - 1)){
-        arrows[0].style.opacity = '0'
-        setTimeout(() => {arrows[0].style.visibility = 'hidden'},300)
-      } else {
-        arrows[1].style.visibility = 'visible'
-        arrows[1].style.opacity = '1'
       }
-      // *************
-    }
     if (e.target.id === 'leftArrow') {
       counter--
-      // make function that takes in counter #
-      imgSlider.style.left = `${currentLeft+galleryWidth}px`
-      if (counter <= 0){
-        arrows[1].style.opacity = '0'
-        setTimeout(() => {arrows[1].style.visibility = 'hidden'},300)
-      } else {
-        arrows[0].style.visibility = 'visible'
-        arrows[0].style.opacity = '1'
-      }
-      // *************
     }
+    galleryScrollTo (counter)
   }
 
-  // function galleryScrollTo (a) {
+  function gallerySelector(e) {
+    if (e.target.className === 'indGalItem') return
+    const targetName = parseInt(e.target.parentNode.getAttribute("name"))
+    galleryScrollTo(targetName)
+    counter = targetName
+  }
 
-  // }
+  function galleryScrollTo (countNum) {
+    innerGalleryDivs.forEach(item => item.classList.remove('selectedGallery'))
+    innerGalleryDivs[countNum].classList.add('selectedGallery')
+    const galleryNum = imgSlider.childElementCount
+    const currentLeft = (galleryWidth * (-countNum))
+    imgSlider.style.left = `${currentLeft}px`
+    if (countNum >= (galleryNum - 1)){
+      arrows[0].style.opacity = '0'
+      setTimeout(() => {arrows[0].style.visibility = 'hidden'},visibilityTime)
+      arrows[1].style.visibility = 'visible'
+      arrows[1].style.opacity = '1'
+    } else if (countNum <= 0){
+      arrows[1].style.opacity = '0'
+      setTimeout(() => {arrows[1].style.visibility = 'hidden'},visibilityTime)
+      arrows[0].style.visibility = 'visible'
+      arrows[0].style.opacity = '1'
+    } else {
+      arrows[1].style.visibility = 'visible'
+      arrows[1].style.opacity = '1'
+      arrows[0].style.visibility = 'visible'
+      arrows[0].style.opacity = '1'
+    }
+    const windowWidth = window.innerWidth
+    const intoToLeft = innerGalleryInfo.getBoundingClientRect().left
+    const howMuchToRight = windowWidth - intoToLeft
+    innerGalleryInfo.style.left = `${howMuchToRight}px`
+    setTimeout(() => {
+      galleryInfo[lastCountnum].classList.remove('projectDetailsShow')
+      lastCountnum = countNum
+      galleryInfo[countNum].classList.add('projectDetailsShow')
+      innerGalleryInfo.style.left = '0px'
+    },500)
+  }
 
+
+
+  mapGallery()
   resizeNav()
   scrollLocater()
   window.addEventListener('scroll', debounce(scrollLocater))
   window.addEventListener("resize", resizeNav);
   navItem.forEach(nav => nav.addEventListener('click', navClickTransition))
-  arrows.forEach(arrow => arrow.addEventListener('click', debounce(galleryCounter,300)))
+  arrows.forEach(arrow => arrow.addEventListener('click', debounce(galleryCounter,visibilityTime)))
 })

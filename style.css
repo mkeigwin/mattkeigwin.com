@@ -102,6 +102,14 @@ article {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+}
+
+#biggerGallery {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 #gallery {
@@ -109,6 +117,7 @@ article {
   width: 50vw;
   position: relative;
   overflow: hidden;
+  margin-bottom: 5vh;
 }
 
 .galleryDiv {
@@ -146,16 +155,69 @@ article {
   position: absolute;
 }
 
+.galleryInfo {
+  height: 30vh;
+  width: 30vw;
+  margin-left: 5vw;
+}
+
+#innerGalleryInfo {
+  height: 30vh;
+  width: 30vw;
+  background: grey;
+  position: relative;
+  transition: left .5s cubic-bezier(0.61,-0.19, 0.7,-0.11);
+  left: 0px; /*to make first transition work need this to be 0*/
+}
+
+.projectDetails {
+  display: none;
+}
+
+.projectDetailsShow {
+  display: block;
+}
+
+.projectDetails p{
+  font-size: .8em
+}
+
+
 .galleryDiv img{
   height: 100%;
   width: 100%;
 }
 
 #galleryItems {
-  height: 20vh;
-  width: 70vw;
-  background-color: grey;
-  opacity: .7;
+  height: 12vh;
+  width: 40vw;
+  background-color: rgba(169,169,169, .7);
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.indGalItem {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  padding: 2vh;
+  height: 8vh;
+}
+
+.selectedGallery {
+  padding: 1vh;
+  flex: 1.2;
+  height: 10vh;
+}
+
+.indGalItem img {
+  height: 100%;
+  width: 100%;
+  opacity: 1;
 }
 
 .four {
