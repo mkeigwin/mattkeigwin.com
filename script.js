@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
   let innerGalleryDivs //needs to be created before called
   const galleryInfo = document.querySelectorAll('.projectDetails')
   const innerGalleryInfo = document.querySelector('#innerGalleryInfo')
+  const mail = document.querySelector('#mailbutton')
   const nameDiv = document.querySelector('#title')
   const myName = nameDiv.querySelector('h1')
 
@@ -75,7 +76,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
 
   function resizeNav () {
     oneTenthHeight = (window.innerHeight)/10
-    rubber.style.fontSize = `${oneTenthHeight}px`
+    rubber.style.fontSize = `${oneTenthHeight*(3/4)}px`
     needToLeftRubber = (window.innerWidth/2) - (rubber.getBoundingClientRect().width/2)
     myName.style.fontSize = `${oneTenthHeight}px`
     myName.style.lineHeight = `${(window.innerHeight)/10}px`
@@ -112,7 +113,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
     fixNav();
     if (currentHeight < sectionCoords[1]){
       titlePic.style.top = `${-currentHeight}px`
-      const navName = myName.getBoundingClientRect().bottom
+      const navName = myName.getBoundingClientRect().bottom - (myName.getBoundingClientRect().height*(1/4))
       const topName = myName.getBoundingClientRect().top
       const currentNameTop = window.getComputedStyle(myName, null).getPropertyValue('top')
       if (navName <= nav.getBoundingClientRect().top) {
@@ -160,7 +161,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
     } else {
       logo.classList.remove('showLogo')
       rubber.classList.remove('rubberBand')
-      rubber.style.fontSize = `${oneTenthHeight}px`
+      rubber.style.fontSize = `${oneTenthHeight* (3/4)}px`
       document.body.classList.remove('fixed-nav')
       document.body.style.paddingTop = 0;
       myName.style.display = 'inline-block'
@@ -254,8 +255,6 @@ document.addEventListener("DOMContentLoaded", ()=> {
     },500)
   }
 
-
-
   mapGallery()
   resizeNav()
   scrollLocater()
@@ -263,4 +262,5 @@ document.addEventListener("DOMContentLoaded", ()=> {
   window.addEventListener("resize", resizeNav);
   navItem.forEach(nav => nav.addEventListener('click', navClickTransition))
   arrows.forEach(arrow => arrow.addEventListener('click', debounce(galleryCounter,visibilityTime)))
+  mail.addEventListener('click', () => window.open('mailto:mattkeigwin@gmail.com?subject=MattKeigwin.com Inquiry'))
 })

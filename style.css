@@ -21,8 +21,7 @@
 
 #title h1 {
   color: red;
-  position: relative;
-  display: inline-block;
+  position:relative;
 }
 
 .rubberBand {
@@ -51,6 +50,43 @@
   } to {
     transform: scale3d(1, 1, 1);
   }
+}
+
+@keyframes bounceIn {
+  from, 20%, 40%, 60%, 80%, to {
+    animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+  }
+
+  0% {
+    opacity: 0;
+    transform: scale3d(.3, .3, .3);
+  }
+
+  20% {
+    transform: scale3d(1.1, 1.1, 1.1);
+  }
+
+  40% {
+    transform: scale3d(.9, .9, .9);
+  }
+
+  60% {
+    opacity: 1;
+    transform: scale3d(1.03, 1.03, 1.03);
+  }
+
+  80% {
+    transform: scale3d(.97, .97, .97);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+.bounceIn {
+  animation-name: bounceIn;
 }
 
 nav {
@@ -92,11 +128,18 @@ nav li {
   height: 0px;
   overflow: hidden;
   box-shadow:0 2px 0 rgba(0,0,0,0.1);
+  text-shadow: none;
 }
 .logo h2 {
   position: relative;
   display: inline-block;
   transition: left .25s ease-out;
+  font-size: 2vh;
+}
+
+.fa:hover {
+  cursor: pointer;
+  color: #55acee !important;
 }
 
 .showLogo {
@@ -117,6 +160,7 @@ nav a {
 .one {
   background: grey;
   height: 80vh;
+  overflow: hidden;
 }
 
 #titlePic {
