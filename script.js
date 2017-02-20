@@ -262,5 +262,5 @@ document.addEventListener("DOMContentLoaded", ()=> {
   window.addEventListener("resize", resizeNav);
   navItem.forEach(nav => nav.addEventListener('click', navClickTransition))
   arrows.forEach(arrow => arrow.addEventListener('click', debounce(galleryCounter,visibilityTime)))
-  mail.addEventListener('click', () => window.open('mailto:mattkeigwin@gmail.com?subject=MattKeigwin.com Inquiry'))
+  mail.addEventListener('click', () => location.href = 'mailto:mattkeigwin@gmail.com?subject=MattKeigwin.com Inquiry')
 })
