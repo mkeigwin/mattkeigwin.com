@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
   const underline = document.querySelector('#navBar')
   const aNav = document.querySelectorAll('#main ul li a')
   const logo = document.querySelector('.logo')
+  const rubber = logo.querySelector('h2')
   const highlight = document.createElement('span')
   const gallery = document.querySelector('#gallery')
   const imgSlider = document.querySelector('#imgSlider')
@@ -18,6 +19,8 @@ document.addEventListener("DOMContentLoaded", ()=> {
   let innerGalleryDivs //needs to be created before called
   const galleryInfo = document.querySelectorAll('.projectDetails')
   const innerGalleryInfo = document.querySelector('#innerGalleryInfo')
+  const nameDiv = document.querySelector('#title')
+  const myName = nameDiv.querySelector('h1')
 
   function mapGallery() {
     const wowz = Array.from(imageItems)
@@ -61,8 +64,21 @@ document.addEventListener("DOMContentLoaded", ()=> {
   let counter = 0
   const visibilityTime = 300 //also need to change css transitions
   let lastCountnum = 0
+  let nameTouchTop = false
+  let nameTouchNav = false
+  let checked = false
+  let oneTenthHeight
+  let lastY = 0
+  let needToLeftRubber
+  rubber.style.left = `${needToLeftRubber}px` //only want it to do this on page load
+  let runOnce = true
 
   function resizeNav () {
+    oneTenthHeight = (window.innerHeight)/10
+    rubber.style.fontSize = `${oneTenthHeight}px`
+    needToLeftRubber = (window.innerWidth/2) - (rubber.getBoundingClientRect().width/2)
+    myName.style.fontSize = `${oneTenthHeight}px`
+    myName.style.lineHeight = `${(window.innerHeight)/10}px`
     sectionCoords = []
     galleryWidth = gallery.offsetWidth
     sections.forEach(section => {
@@ -96,21 +112,61 @@ document.addEventListener("DOMContentLoaded", ()=> {
     fixNav();
     if (currentHeight < sectionCoords[1]){
       titlePic.style.top = `${-currentHeight}px`
+      const navName = myName.getBoundingClientRect().bottom
+      const topName = myName.getBoundingClientRect().top
+      const currentNameTop = window.getComputedStyle(myName, null).getPropertyValue('top')
+      if (navName <= nav.getBoundingClientRect().top) {
+        myName.style.top = `${(currentHeight*.5)}px`
+      } else {
+        nameTouchNav = true
+      }
+      if (topName >= 0) {
+        myName.style.top = `${(currentHeight*.5)}px`
+      } else {
+        nameTouchTop = true
+      }
+      if ((nameTouchTop == true) && (nameTouchNav == false) && (checked == false)) {
+        myName.style.top = `${currentNameTop}px`
+        checked = true
+      }
+      const distanceLeft = nav.offsetTop - window.scrollY
+      const widthSizeName = (-(distanceLeft/oneTenthHeight)) + 2
+      const heightSizeName = distanceLeft/oneTenthHeight
+      if((nameTouchTop == true) && (nameTouchNav == true)) {
+        myName.style.transform = `scale(${widthSizeName},${heightSizeName})`
+        nameTouchNav = false
+        nameTouchTop = false
+        checked = false
+      }
     }
     if (currentHeight > sectionCoords[2]){
       fourPic.style.top = `${-(currentHeight-sectionCoords[2])}px`
     }
   }
-
   function fixNav(){
     if(window.scrollY >= topOfNav) {
       document.body.classList.add('fixed-nav')
       logo.classList.add('showLogo')
       document.body.style.paddingTop = nav.offsetHeight + 'px';
+      myName.style.display = 'none'
+      rubber.classList.add('rubberBand')
+      if (runOnce) {
+        rubber.style.left = `${needToLeftRubber}px`
+        setTimeout(() => {
+          rubber.style.left = '0px'
+        }, 1000)
+        runOnce = false
+      }
     } else {
       logo.classList.remove('showLogo')
+      rubber.classList.remove('rubberBand')
+      rubber.style.fontSize = `${oneTenthHeight}px`
       document.body.classList.remove('fixed-nav')
       document.body.style.paddingTop = 0;
+      myName.style.display = 'inline-block'
+      myName.style.transform = 'scale(1,1)'
+      rubber.style.left = `${needToLeftRubber}px`
+      runOnce = true
     }
   }
 

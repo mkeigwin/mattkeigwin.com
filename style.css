@@ -11,8 +11,46 @@
   font-size: 7vw;
   text-shadow: 3px 4px 0 rgba(0,0,0,0.2);
   height: 63vh;
+  width: 100vw;
   z-index: 4;
   position: relative;
+  -webkit-box-align:center;
+  -webkit-box-pack:center;
+  display:-webkit-box;
+}
+
+#title h1 {
+  color: red;
+  position: relative;
+  display: inline-block;
+}
+
+.rubberBand {
+  -webkit-animation-name: rubberBand;
+  animation-name: rubberBand;
+}
+
+.animated {
+  animation-duration: 1s;
+  animation-fill-mode: both;
+}
+
+@keyframes rubberBand {
+  from {
+    transform: scale3d(2, 1, 1);
+  } 30% {
+    transform: scale3d(.75, 0.75, 1);
+  } 40% {
+    transform: scale3d(1.15, 1.25, 1);
+  } 50% {
+    transform: scale3d(.95, 0.85, 1);
+  } 65% {
+    transform: scale3d(1.05, 1.05, 1);
+  } 75% {
+    transform: scale3d(.98, .95, 1);
+  } to {
+    transform: scale3d(1, 1, 1);
+  }
 }
 
 nav {
@@ -20,7 +58,6 @@ nav {
   top:0;
   width: 100%;
   transition:all 0.5s;
-  transition:background 1.25s;
   position: relative;
   z-index: 3;
 }
@@ -50,12 +87,16 @@ nav li {
 .logo {
   width: 100vw;
   background: white;
-  color:yellow;
+  color:red;
   text-shadow: 3px 4px 0 rgba(0,0,0,0.2);
   height: 0px;
-  transition: all 0.5s ease;
   overflow: hidden;
   box-shadow:0 2px 0 rgba(0,0,0,0.1);
+}
+.logo h2 {
+  position: relative;
+  display: inline-block;
+  transition: left .25s ease-out;
 }
 
 .showLogo {
