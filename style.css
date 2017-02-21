@@ -17,6 +17,7 @@
   -webkit-box-align:center;
   -webkit-box-pack:center;
   display:-webkit-box;
+  /*top: 5vh;*/
 }
 
 #title h1 {
