@@ -22,6 +22,8 @@ document.addEventListener("DOMContentLoaded", ()=> {
   const mail = document.querySelector('#mailbutton')
   const nameDiv = document.querySelector('#title')
   const myName = nameDiv.querySelector('h1')
+  const letters = document.querySelectorAll('.letter')
+  const links = document.querySelectorAll('.links')
 
   function mapGallery() {
     const wowz = Array.from(imageItems)
@@ -65,21 +67,39 @@ document.addEventListener("DOMContentLoaded", ()=> {
   let counter = 0
   const visibilityTime = 300 //also need to change css transitions
   let lastCountnum = 0
-  let nameTouchTop = false
-  let nameTouchNav = false
-  let checked = false
   let oneTenthHeight
-  let lastY = 0
+  let oneTenthWidth
   let needToLeftRubber
   rubber.style.left = `${needToLeftRubber}px` //only want it to do this on page load
   let runOnce = true
 
   function resizeNav () {
     oneTenthHeight = (window.innerHeight)/10
-    rubber.style.fontSize = `${oneTenthHeight*(3/4)}px`
+    oneTenthWidth = (window.innerWidth)/10
+    if (window.innerWidth/window.innerHeight <= .797){
+      rubber.style.fontSize = '4.5vh'
+    }else if (window.innerWidth/window.innerHeight <= 1.02) {
+      rubber.style.fontSize = '7vh'
+    } else {
+      rubber.style.fontSize = '8.88vh'
+    }
     needToLeftRubber = (window.innerWidth/2) - (rubber.getBoundingClientRect().width/2)
-    myName.style.fontSize = `${oneTenthHeight}px`
-    myName.style.lineHeight = `${(window.innerHeight)/10}px`
+    if (window.innerWidth > 1050) {
+      letters.forEach(letter => {
+        letter.style.fontSize = `${oneTenthWidth*(2/3)}px`
+        letter.style.lineHeight =`${oneTenthWidth*(2/3)}px`
+      })
+    } else if (window.innerWidth < 1050 && window.innerWidth > 900) {
+      letters.forEach(letter => {
+        letter.style.fontSize = `${oneTenthWidth*(3/4)}px`
+        letter.style.lineHeight =`${oneTenthWidth*(3/4)}px`
+      })
+    } else if (window.innerWidth < 900) {
+      letters.forEach(letter => {
+        letter.style.fontSize = `${oneTenthWidth}px`
+        letter.style.lineHeight =`${oneTenthWidth}px`
+      })
+    }
     sectionCoords = []
     galleryWidth = gallery.offsetWidth
     sections.forEach(section => {
@@ -95,7 +115,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
     });
     fix = sortedClientWidth[1]
     aNav.forEach(nav => {
-      nav.style.width = `${sortedClientWidth[sortedClientWidth.length-1] + 1}px`
+      nav.style.width = `${sortedClientWidth[sortedClientWidth.length-1]}px`
     })
     scrollLocater()
   }
@@ -113,31 +133,13 @@ document.addEventListener("DOMContentLoaded", ()=> {
     fixNav();
     if (currentHeight < sectionCoords[1]){
       titlePic.style.top = `${-currentHeight}px`
-      const navName = myName.getBoundingClientRect().bottom - (myName.getBoundingClientRect().height*(1/4))
+      const navName = myName.getBoundingClientRect().bottom
       const topName = myName.getBoundingClientRect().top
-      const currentNameTop = window.getComputedStyle(myName, null).getPropertyValue('top')
       if (navName <= nav.getBoundingClientRect().top) {
         myName.style.top = `${(currentHeight*.5)}px`
-      } else {
-        nameTouchNav = true
       }
       if (topName >= 0) {
         myName.style.top = `${(currentHeight*.5)}px`
-      } else {
-        nameTouchTop = true
-      }
-      if ((nameTouchTop == true) && (nameTouchNav == false) && (checked == false)) {
-        myName.style.top = `${currentNameTop}px`
-        checked = true
-      }
-      const distanceLeft = nav.offsetTop - window.scrollY
-      const widthSizeName = (-(distanceLeft/oneTenthHeight)) + 2
-      const heightSizeName = distanceLeft/oneTenthHeight
-      if((nameTouchTop == true) && (nameTouchNav == true)) {
-        myName.style.transform = `scale(${widthSizeName},${heightSizeName})`
-        nameTouchNav = false
-        nameTouchTop = false
-        checked = false
       }
     }
     if (currentHeight > sectionCoords[2]){
@@ -150,24 +152,26 @@ document.addEventListener("DOMContentLoaded", ()=> {
       logo.classList.add('showLogo')
       document.body.style.paddingTop = nav.offsetHeight + 'px';
       myName.style.display = 'none'
+      myName.style.top = '0'
       rubber.classList.add('rubberBand')
+      letters.forEach(letter => letter.style.color = 'white')
       if (runOnce) {
         rubber.style.left = `${needToLeftRubber}px`
         setTimeout(() => {
           rubber.style.left = '0px'
+          links.forEach(link => link.style.opacity = '1')
         }, 1000)
         runOnce = false
       }
     } else {
       logo.classList.remove('showLogo')
       rubber.classList.remove('rubberBand')
-      rubber.style.fontSize = `${oneTenthHeight* (3/4)}px`
       document.body.classList.remove('fixed-nav')
       document.body.style.paddingTop = 0;
-      myName.style.display = 'inline-block'
-      myName.style.transform = 'scale(1,1)'
       rubber.style.left = `${needToLeftRubber}px`
       runOnce = true
+      myName.style.display = 'block'
+      links.forEach(link => link.style.opacity = '0')
     }
   }
 
@@ -255,12 +259,25 @@ document.addEventListener("DOMContentLoaded", ()=> {
     },500)
   }
 
+  function randomLetterColor (e) {
+    const colorsILike = ['deepskyblue','cyan','turquoise','mediumturquoise','aqua','darkturquoise','skyblue','lightskyblue','steelblue','dodgerblue','cornflowerblue','royalblue','midnightblue','navy']
+    const randNumbColor = Math.floor(Math.random() * colorsILike.length) - 1
+    e.target.style.color = `${colorsILike[randNumbColor]}`
+  }
+
+  function testing () {
+    letters.forEach(letter => letter.style.color = 'crimson')
+    setTimeout(()=> {letters.forEach(letter => letter.style.color = 'white')}, 50)
+  }
+
   mapGallery()
   resizeNav()
   scrollLocater()
   window.addEventListener('scroll', debounce(scrollLocater))
   window.addEventListener("resize", resizeNav);
-  navItem.forEach(nav => nav.addEventListener('click', navClickTransition))
+  navItem.forEach(nav => nav.addEventListener('click', debounce(navClickTransition, 1250)))
   arrows.forEach(arrow => arrow.addEventListener('click', debounce(galleryCounter,visibilityTime)))
   mail.addEventListener('click', () => location.href = 'mailto:mattkeigwin@gmail.com?subject=MattKeigwin.com Inquiry')
+  letters.forEach(letter => letter.addEventListener('mouseover', randomLetterColor))
+  document.body.addEventListener('click', testing)
 })
