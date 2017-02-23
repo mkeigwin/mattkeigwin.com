@@ -10,6 +10,7 @@
   color:white;
   font-size: 7vw;
   height: 63vh;
+  /*height: 70vh;*/
   width: 100vw;
   z-index: 4;
   position: relative;
@@ -28,7 +29,6 @@
 }
 
 #title h1 {
-  /*color: white;*/
   color: #fffffa;
   position:relative;
   font-family: 'Aldrich', sans-serif;
@@ -38,7 +38,37 @@
 #title h2 {
   font-size: 3vw;
   text-shadow: 2px 3px 0 rgba(0,0,0,.8);
-  margin-top: 2vh;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 55.4vh;
+  font-family: 'Aldrich', sans-serif;
+}
+
+.flipOut {
+  animation: flipOutX .5s;
+}
+
+@keyframes flipOutX {
+  from {
+    transform: rotateX(0deg) translateX(-50%);
+  }
+  to {
+    transform: rotateX(90deg) translateX(-50%);
+  }
+}
+
+.flipIn {
+  animation: flipInX .5s;
+}
+
+@keyframes flipInX {
+  from {
+    transform: rotateX(-90deg) translateX(-50%);
+  }
+  to {
+    transform: rotateX(0deg) translateX(-50%);
+  }
 }
 
 .rubberBand {
@@ -200,8 +230,8 @@ nav a {
   transition:all 0.2s;
   text-transform: uppercase;
   text-align: center;
-  border-bottom: 3px solid white;
   font-family: 'Aldrich', sans-serif;
+  /*white-space: nowrap ;*/
 }
 
 .arrowDown {
@@ -209,18 +239,20 @@ nav a {
   z-index: 10;
   animation: moveDown 2s infinite;
   top: 100vh;
-  /*transform: translateY(-100%);*/
   left: 50%;
   transform: translateX(-50%);
   color: white !important;
 }
+
 @keyframes moveDown {
-    0%   {top: 95vh;
-          transform: translateY(-100%);}
-    60%  {top: 100vh;
-          transform: translateY(-100%);}
-    100% {top: 95vh;
-          transform: translateY(-100%);}
+    0%   {top: 98vh; transform: translateY(-100%);}
+    60%  {top: 100vh; transform: translateY(-100%);}
+    100% {top: 98vh; transform: translateY(-100%);}
+}
+
+.onlyTitle {
+  opacity: 1;
+  transition: opacity .5s;
 }
 
 .one {
@@ -378,7 +410,7 @@ article {
 }
 
 #sec4Pic {
-  position: relative;
+  position: relative; /*top is added in js*/
   display: block;
   width: 100vw;
   height: 163vh;
@@ -396,4 +428,92 @@ article {
   border-radius:20px;
   display: block;
   box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.placeOnImage4 {
+  position: absolute;
+  top: 260vh;
+  height: 80vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow-y: scroll;
+}
+
+.starPlacement {
+  position: relative;
+  width: 50vw;
+  display: inline-block;
+  max-height: 60vh;
+  min-width: 220px;
+  overflow-x: visible;
+}
+
+.skillHolder {
+  position: relative;
+  background: white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 50vw;
+}
+
+.abilityTitle {
+  font-size: 2vh;
+}
+
+.skillHolder:hover .fa-star {margin: 0vh .5vw 0vh .5vw;}
+.skillHolder:hover .fa-star-o {margin: 0vh .5vw 0vh .5vw;}
+.skillHolder:hover {
+  background: rgb(221, 221, 221);
+}
+
+.fa-star {
+  color: gold;
+  margin: 0vh .1vw 0vh .1vw;
+  transition: margin .5s;
+}
+
+.fa-star-o {
+  color: grey;
+  margin: 0vh .1vw 0vh .1vw;
+  transition: margin .5s;
+}
+
+
+@media handheld, screen and (max-height: 550px) {
+  .abilityTitle {
+    font-size: 15px;
+  }
+}
+
+@media handheld, screen and (max-width: 600px) {
+  #galleryItems {
+    display: none;
+  }
+  #biggerGallery {
+    flex-direction: column;
+  }
+  .galleryInfo {
+    height: 10vh;
+    width: 60vw;
+  }
+  #innerGalleryInfo {
+     height: 10vh;
+     width: 60vw;
+  }
+  #gallery {
+    height: 50vh;
+    width: 60vw;
+  }
+  .galleryDiv {
+    height: 50vh;
+    width: 60vw;
+  }
+  #rightArrow, #leftArrow {
+    height: 20%
+  }
 }

@@ -24,6 +24,10 @@ document.addEventListener("DOMContentLoaded", ()=> {
   const myName = nameDiv.querySelector('h1')
   const letters = document.querySelectorAll('.letter')
   const links = document.querySelectorAll('.links')
+  const arrowDown = document.querySelector('.arrowDown')
+  const onlyTitle = document.querySelectorAll('.onlyTitle')
+  const mySkills = document.querySelector('#mySkills')
+  const starPlacement = document.querySelector('.starPlacement')
 
   function mapGallery() {
     const wowz = Array.from(imageItems)
@@ -72,6 +76,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
   let needToLeftRubber
   rubber.style.left = `${needToLeftRubber}px` //only want it to do this on page load
   let runOnce = true
+  let divsInstarPlacement
 
   function resizeNav () {
     oneTenthHeight = (window.innerHeight)/10
@@ -107,7 +112,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
     })
     navItem = Array.from(aNav)
     firstNav = navItem[0].offsetLeft
-    lastNav = navItem[navItem.length-1].offsetLeft + navItem[navItem.length-1].clientWidth
+    lastNav = navItem[navItem.length-1].offsetLeft + navItem[navItem.length-1].getBoundingClientRect().width
     const navClientWidths = []
     navItem.forEach(nav => navClientWidths.push(nav.clientWidth))
     const sortedClientWidth = navClientWidths.sort(function(a, b) {
@@ -131,6 +136,11 @@ document.addEventListener("DOMContentLoaded", ()=> {
     highlight.style.width = `${fix}px`
     highlight.style.height = `2px`
     fixNav();
+    if ((titlePic.getBoundingClientRect().height - window.innerHeight) > 2*currentHeight) {
+      onlyTitle.forEach(title => title.style.opacity = '1')
+    } else {
+      onlyTitle.forEach(title => title.style.opacity = '0')
+    }
     if (currentHeight < sectionCoords[1]){
       titlePic.style.top = `${-currentHeight}px`
       const navName = myName.getBoundingClientRect().bottom
@@ -143,9 +153,22 @@ document.addEventListener("DOMContentLoaded", ()=> {
       }
     }
     if (currentHeight > sectionCoords[2]){
-      fourPic.style.top = `${-(currentHeight-sectionCoords[2])}px`
+      fourPic.style.top = `${- (currentHeight-sectionCoords[2])}px`
+      divsInstarPlacement.forEach((indDiv, i) => {
+        if (Math.abs(sectionCoords[3] - window.scrollY) < 1) {
+          indDiv.style.left = `0px`
+        } else {
+          if ((i+1)%2 == 0) {
+            indDiv.style.left = `${2000*(currentHeight/sectionCoords[3]) - 2000}px`
+          } else {
+            indDiv.style.left = `${-(2000*(currentHeight/sectionCoords[3]) - 2000)}px`
+          }
+        }
+      });
     }
   }
+
+
   function fixNav(){
     if(window.scrollY >= topOfNav) {
       document.body.classList.add('fixed-nav')
@@ -261,15 +284,60 @@ document.addEventListener("DOMContentLoaded", ()=> {
 
   function randomLetterColor (e) {
     const colorsILike = ['deepskyblue','cyan','turquoise','mediumturquoise','aqua','darkturquoise','skyblue','lightskyblue','steelblue','dodgerblue','cornflowerblue','royalblue','midnightblue','navy']
-    const randNumbColor = Math.floor(Math.random() * colorsILike.length) - 1
+    const randNumbColor = Math.floor(Math.random() * colorsILike.length)
     e.target.style.color = `${colorsILike[randNumbColor]}`
   }
 
-  function testing () {
+  function changeNameColorBack () {
     letters.forEach(letter => letter.style.color = 'crimson')
     setTimeout(()=> {letters.forEach(letter => letter.style.color = 'white')}, 50)
   }
 
+  let titleCounter = 0
+  const tibits = ['Full Stack Web Developer', 'Bates College Graduate', 'Accepting Freelance Work', 'Would Rather Be Skiing']
+  setTimeout(() => {mySkills.classList.add('flipOut')},2500)
+  setInterval(() => {
+    titleCounter ++
+    mySkills.innerHTML = `-${tibits[titleCounter]}-`
+      mySkills.classList.remove('flipOut')
+      mySkills.classList.add('flipIn')
+    if (titleCounter >= tibits.length -1 ) {
+      titleCounter = -1
+    }
+    setTimeout(() => {
+    mySkills.classList.add('flipOut')
+    mySkills.classList.remove('flipIn')
+    }, 2500)
+  }, 3000)
+
+function mappingStar() {
+  const starData = [{skill:'CSS(3)', star:5},{skill:'HTML(5)', star:5},{skill:'Javascript', star:5},{skill:'Command Line', star:5},{skill:'GitHub', star:5},{skill:'Microsoft Office', star:5},{skill:'JQuery', star:4},{skill:'React', star:4},{skill:'Node.js', star:4},{skill:'Express.js', star:4},{skill:'JSON', star:4},{skill:'MySQL', star:4},{skill:'MongoDB', star:3},{skill:'Redux', star:3},{skill:'Photoshop', star:3},{skill:'Stata', star:2},{skill:'Eviews', star:2},{skill:'Ruby', star:2},{skill:'Rails', star:2}]
+  starData.forEach(star => {
+    const skillHolder = document.createElement("DIV")
+    skillHolder.classList.add('skillHolder')
+    const abilityTitle = document.createElement("SPAN")
+    abilityTitle.classList.add('abilityTitle')
+    abilityTitle.innerHTML = `${star.skill}`
+    skillHolder.appendChild(abilityTitle)
+    const abilityScore = document.createElement("SPAN")
+    for (i=1; i <= 5; i++) {
+      const fiveI = document.createElement("I")
+      fiveI.classList.add('fa')
+      if (star.star >= i) {
+        fiveI.classList.add('fa-star')
+      } else {
+        fiveI.classList.add('fa-star-o')
+      }
+      fiveI.classList.add('fa-1x')
+      abilityScore.appendChild(fiveI)
+    }
+    skillHolder.appendChild(abilityScore)
+    starPlacement.appendChild(skillHolder)
+  })
+  divsInstarPlacement = document.querySelectorAll('.skillHolder')
+}
+
+  mappingStar()
   mapGallery()
   resizeNav()
   scrollLocater()
@@ -279,5 +347,6 @@ document.addEventListener("DOMContentLoaded", ()=> {
   arrows.forEach(arrow => arrow.addEventListener('click', debounce(galleryCounter,visibilityTime)))
   mail.addEventListener('click', () => location.href = 'mailto:mattkeigwin@gmail.com?subject=MattKeigwin.com Inquiry')
   letters.forEach(letter => letter.addEventListener('mouseover', randomLetterColor))
-  document.body.addEventListener('click', testing)
+  document.body.addEventListener('click', changeNameColorBack)
+  arrowDown.addEventListener('click', () => {scrollTo(document.body, sectionCoords[1], 1250)})
 })
