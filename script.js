@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", ()=> {
-
+console.log('Get with the times, don\'t use safari!!!!')
   const nav = document.querySelector('#main')
   const titlePic = document.querySelector('#titlePic')
   const fourPic = document.querySelector('#sec4Pic')
@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
   let innerGalleryDivs //needs to be created before called
   const galleryInfo = document.querySelectorAll('.projectDetails')
   const innerGalleryInfo = document.querySelector('#innerGalleryInfo')
-  const mail = document.querySelector('#mailbutton')
+  const mail = document.querySelectorAll('.mailbutton')
   const nameDiv = document.querySelector('#title')
   const myName = nameDiv.querySelector('h1')
   const letters = document.querySelectorAll('.letter')
@@ -29,11 +29,14 @@ document.addEventListener("DOMContentLoaded", ()=> {
   const mySkills = document.querySelector('#mySkills')
   const starPlacement = document.querySelector('.starPlacement')
   const placeOnImage4 = document.querySelector('.placeOnImage4')
-  const resumeButton = document.querySelector('.four button')
+  const resumeButton = document.querySelector('.four .myButton')
   const resumeTitle = document.querySelector('.four h2')
   const backgroundScroll = document.createElement("DIV")
   const resumeClose = document.querySelector('.resumeClose')
   const fixedDiv = document.querySelector('.fixedDiv')
+  const personalButton = fixedDiv.querySelector('.myButton')
+  const headShot1 = fixedDiv.querySelectorAll('.headShot1')
+  const headShot2 = fixedDiv.querySelectorAll('.headShot2')
 
   function mapGallery() {
     const wowz = Array.from(imageItems)
@@ -83,8 +86,8 @@ document.addEventListener("DOMContentLoaded", ()=> {
   rubber.style.left = `${needToLeftRubber}px` //only want it to do this on page load
   let runOnce = true
   let galleryCounterNum = 0
-
-  resumeClose.style.display = 'none'
+  let resumeCloseDisplay = 'none'
+  let headShotState = 'one'
 
   function resizeNav () {
     resumeSizing()
@@ -172,9 +175,12 @@ document.addEventListener("DOMContentLoaded", ()=> {
       fourPic.style.top = `${- (currentHeight-sectionCoords[2])}px`
       fixedDiv.style.display = `none`
       placeOnImage4.style.display = `flex`
+      resumeClose.style.display = `${resumeCloseDisplay}`
+      // resumeClose.style.display = `block`
     } else {
       fixedDiv.style.display = `flex`
       placeOnImage4.style.display = `none`
+      resumeClose.style.display = 'none'
     }
   }
 
@@ -357,7 +363,6 @@ document.addEventListener("DOMContentLoaded", ()=> {
   }
 
   function showResume () {
-    resumeClose.style.display = 'block'
     const aTagButton = document.createElement('a');
     aTagButton.setAttribute('href',"Pic/MatthewKeigwin.jpg");
     aTagButton.setAttribute('download', 'MatthewKeigwin');
@@ -366,20 +371,19 @@ document.addEventListener("DOMContentLoaded", ()=> {
     resumeButton.appendChild(aTagButton);
     starPlacement.style.width = '95%'
     starPlacement.style.height = '100%'
+    starPlacement.style.zIndex = '-1'
     resumeTitle.innerHTML = 'Resume'
     while (starPlacement.firstChild) {
       starPlacement.removeChild(starPlacement.firstChild);
     }
-    // const closeCoordsX = (starPlacement.getBoundingClientRect().left + starPlacement.getBoundingClientRect().left - resumeClose.getBoundingClientRect().width)
-    // const closeCoordsY = (starPlacement.getBoundingClientRect().top)
-    // resumeClose.style.top = `${closeCoordsY}px`
-    // resumeClose.style.left = `${closeCoordsX}px`
     setTimeout(() => {
         starPlacement.style.backgroundImage = 'url(Pic/MatthewKeigwin.jpg)';
         starPlacement.style.backgroundSize = 'cover'
         starPlacement.style.backgroundAttachment = 'local'
         starPlacement.style.overflowY = 'scroll'
       setTimeout(() => {
+        resumeClose.style.display = 'block'
+        resumeCloseDisplay = 'block'
         resumeSizing()
         starPlacement.appendChild(backgroundScroll)
       },100)
@@ -396,6 +400,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
     const adjustedHeight = height*widthToHeightVariable
     backgroundScroll.style.height = `${adjustedHeight}px`
     backgroundScroll.style.width = `100%`
+    positionClosingX ()
   }
 
   function closeResume () {
@@ -408,7 +413,30 @@ document.addEventListener("DOMContentLoaded", ()=> {
     starPlacement.style.width = '50vw'
     starPlacement.style.height = 'auto'
     resumeClose.style.display = 'none'
+    resumeCloseDisplay = 'none'
+    starPlacement.style.zIndex = '1'
     resumeTitle.innerHTML = 'Select Skills'
+  }
+
+  function positionClosingX () {
+    const closeCoordsX = (starPlacement.getBoundingClientRect().left + starPlacement.getBoundingClientRect().width - resumeClose.getBoundingClientRect().width)
+    const closeCoordsY = (starPlacement.getBoundingClientRect().top)
+    resumeClose.style.top = `${closeCoordsY +5}px`
+    resumeClose.style.left = `${closeCoordsX - 5}px`
+  }
+
+  function switchAboutInfo () {
+    if (headShotState === 'one') {
+      headShot2.forEach(head => head.style.display = 'none')
+      headShot1.forEach(head => head.style.display = 'block')
+      headShotState = 'two'
+      personalButton.innerHTML = 'Professional Info'
+    } else {
+      headShot1.forEach(head => head.style.display = 'none')
+      headShot2.forEach(head => head.style.display = 'block')
+      headShotState = 'one'
+      personalButton.innerHTML = 'Personal Info'
+    }
   }
 
   mappingStar()
@@ -419,10 +447,12 @@ document.addEventListener("DOMContentLoaded", ()=> {
   window.addEventListener("resize", resizeNav);
   navItem.forEach(nav => nav.addEventListener('click', debounce(navClickTransition, 1250)))
   arrows.forEach(arrow => arrow.addEventListener('click', debounce(galleryCounter,visibilityTime)))
-  mail.addEventListener('click', () => location.href = 'mailto:mattkeigwin@gmail.com?subject=MattKeigwin.com Inquiry')
+  mail.forEach(mail => mail.addEventListener('click', () => location.href = 'mailto:mattkeigwin@gmail.com?subject=MattKeigwin.com Inquiry'))
+  // mail.addEventListener('click', () => location.href = 'mailto:mattkeigwin@gmail.com?subject=MattKeigwin.com Inquiry')
   letters.forEach(letter => letter.addEventListener('mouseover', randomLetterColor))
   document.body.addEventListener('click', changeNameColorBack)
   arrowDown.addEventListener('click', () => {scrollTo(document.body, sectionCoords[1], 1250)})
   resumeButton.addEventListener('click', showResume)
   resumeClose.addEventListener('click', closeResume)
+  personalButton.addEventListener('click', switchAboutInfo)
 })
