@@ -28,6 +28,12 @@ document.addEventListener("DOMContentLoaded", ()=> {
   const onlyTitle = document.querySelectorAll('.onlyTitle')
   const mySkills = document.querySelector('#mySkills')
   const starPlacement = document.querySelector('.starPlacement')
+  const placeOnImage4 = document.querySelector('.placeOnImage4')
+  const resumeButton = document.querySelector('.four button')
+  const resumeTitle = document.querySelector('.four h2')
+  const backgroundScroll = document.createElement("DIV")
+  const resumeClose = document.querySelector('.resumeClose')
+  const fixedDiv = document.querySelector('.fixedDiv')
 
   function mapGallery() {
     const wowz = Array.from(imageItems)
@@ -76,9 +82,14 @@ document.addEventListener("DOMContentLoaded", ()=> {
   let needToLeftRubber
   rubber.style.left = `${needToLeftRubber}px` //only want it to do this on page load
   let runOnce = true
-  let divsInstarPlacement
+  let galleryCounterNum = 0
+
+  resumeClose.style.display = 'none'
 
   function resizeNav () {
+    resumeSizing()
+    galleryScrollTo(galleryCounterNum)
+    imgSlider.style.transition = "none";
     oneTenthHeight = (window.innerHeight)/10
     oneTenthWidth = (window.innerWidth)/10
     if (window.innerWidth/window.innerHeight <= .797){
@@ -152,22 +163,20 @@ document.addEventListener("DOMContentLoaded", ()=> {
         myName.style.top = `${(currentHeight*.5)}px`
       }
     }
+    if (currentHeight > sectionCoords[1]){
+      arrowDown.style.display = `none`
+    } else {
+      arrowDown.style.display = `block`
+    }
     if (currentHeight > sectionCoords[2]){
       fourPic.style.top = `${- (currentHeight-sectionCoords[2])}px`
-      divsInstarPlacement.forEach((indDiv, i) => {
-        if (Math.abs(sectionCoords[3] - window.scrollY) < 1) {
-          indDiv.style.left = `0px`
-        } else {
-          if ((i+1)%2 == 0) {
-            indDiv.style.left = `${2000*(currentHeight/sectionCoords[3]) - 2000}px`
-          } else {
-            indDiv.style.left = `${-(2000*(currentHeight/sectionCoords[3]) - 2000)}px`
-          }
-        }
-      });
+      fixedDiv.style.display = `none`
+      placeOnImage4.style.display = `flex`
+    } else {
+      fixedDiv.style.display = `flex`
+      placeOnImage4.style.display = `none`
     }
   }
-
 
   function fixNav(){
     if(window.scrollY >= topOfNav) {
@@ -238,21 +247,26 @@ document.addEventListener("DOMContentLoaded", ()=> {
     if (e.target.id === 'leftArrow') {
       counter--
     }
+    imgSlider.style.transition = "left 1s";
     galleryScrollTo (counter)
+    projectDetailMover ()
   }
 
   function gallerySelector(e) {
     if (e.target.className === 'indGalItem') return
     const targetName = parseInt(e.target.parentNode.getAttribute("name"))
+    imgSlider.style.transition = "left 1s";
     galleryScrollTo(targetName)
     counter = targetName
+    projectDetailMover ()
   }
 
   function galleryScrollTo (countNum) {
+    galleryCounterNum = countNum
     innerGalleryDivs.forEach(item => item.classList.remove('selectedGallery'))
     innerGalleryDivs[countNum].classList.add('selectedGallery')
     const galleryNum = imgSlider.childElementCount
-    const currentLeft = (galleryWidth * (-countNum))
+    const currentLeft = (galleryWidth * (-countNum)) // ***
     imgSlider.style.left = `${currentLeft}px`
     if (countNum >= (galleryNum - 1)){
       arrows[0].style.opacity = '0'
@@ -270,17 +284,21 @@ document.addEventListener("DOMContentLoaded", ()=> {
       arrows[0].style.visibility = 'visible'
       arrows[0].style.opacity = '1'
     }
+  }
+
+  function projectDetailMover () {
     const windowWidth = window.innerWidth
     const intoToLeft = innerGalleryInfo.getBoundingClientRect().left
     const howMuchToRight = windowWidth - intoToLeft
     innerGalleryInfo.style.left = `${howMuchToRight}px`
     setTimeout(() => {
       galleryInfo[lastCountnum].classList.remove('projectDetailsShow')
-      lastCountnum = countNum
-      galleryInfo[countNum].classList.add('projectDetailsShow')
+      lastCountnum = galleryCounterNum
+      galleryInfo[galleryCounterNum].classList.add('projectDetailsShow')
       innerGalleryInfo.style.left = '0px'
     },500)
   }
+
 
   function randomLetterColor (e) {
     const colorsILike = ['deepskyblue','cyan','turquoise','mediumturquoise','aqua','darkturquoise','skyblue','lightskyblue','steelblue','dodgerblue','cornflowerblue','royalblue','midnightblue','navy']
@@ -310,32 +328,88 @@ document.addEventListener("DOMContentLoaded", ()=> {
     }, 2500)
   }, 3000)
 
-function mappingStar() {
-  const starData = [{skill:'CSS(3)', star:5},{skill:'HTML(5)', star:5},{skill:'Javascript', star:5},{skill:'Command Line', star:5},{skill:'GitHub', star:5},{skill:'Microsoft Office', star:5},{skill:'JQuery', star:4},{skill:'React', star:4},{skill:'Node.js', star:4},{skill:'Express.js', star:4},{skill:'JSON', star:4},{skill:'MySQL', star:4},{skill:'MongoDB', star:3},{skill:'Redux', star:3},{skill:'Photoshop', star:3},{skill:'Stata', star:2},{skill:'Eviews', star:2},{skill:'Ruby', star:2},{skill:'Rails', star:2}]
-  starData.forEach(star => {
-    const skillHolder = document.createElement("DIV")
-    skillHolder.classList.add('skillHolder')
-    const abilityTitle = document.createElement("SPAN")
-    abilityTitle.classList.add('abilityTitle')
-    abilityTitle.innerHTML = `${star.skill}`
-    skillHolder.appendChild(abilityTitle)
-    const abilityScore = document.createElement("SPAN")
-    for (i=1; i <= 5; i++) {
-      const fiveI = document.createElement("I")
-      fiveI.classList.add('fa')
-      if (star.star >= i) {
-        fiveI.classList.add('fa-star')
-      } else {
-        fiveI.classList.add('fa-star-o')
+  function mappingStar() {
+    // const starData = [{skill:'CSS(3)', star:5},{skill:'HTML(5)', star:5},{skill:'Javascript', star:5},{skill:'Command Line', star:5},{skill:'GitHub', star:5},{skill:'Microsoft Office', star:5},{skill:'JQuery', star:4},{skill:'React', star:4},{skill:'Node.js', star:4},{skill:'Express.js', star:4},{skill:'JSON', star:4},{skill:'MySQL', star:4},{skill:'MongoDB', star:3},{skill:'Redux', star:3},{skill:'Photoshop', star:3},{skill:'Stata', star:2},{skill:'Eviews', star:2},{skill:'Ruby', star:2},{skill:'Rails', star:2}]
+    const starData = [{skill:'CSS(3)', star:5},{skill:'HTML(5)', star:5},{skill:'Javascript', star:5},{skill:'Command Line', star:5},{skill:'JQuery', star:4},{skill:'React', star:4},{skill:'Node.js', star:4},{skill:'Express.js', star:4},{skill:'MySQL', star:4},{skill:'Redux', star:3},{skill:'Photoshop', star:3},{skill:'Ruby', star:2},{skill:'Rails', star:2}]
+
+    starData.forEach(star => {
+      const skillHolder = document.createElement("DIV")
+      skillHolder.classList.add('skillHolder')
+      const abilityTitle = document.createElement("SPAN")
+      abilityTitle.classList.add('abilityTitle')
+      abilityTitle.innerHTML = `${star.skill}`
+      skillHolder.appendChild(abilityTitle)
+      const abilityScore = document.createElement("SPAN")
+      for (i=1; i <= 5; i++) {
+        const fiveI = document.createElement("I")
+        fiveI.classList.add('fa')
+        if (star.star >= i) {
+          fiveI.classList.add('fa-star')
+        } else {
+          fiveI.classList.add('fa-star-o')
+        }
+        fiveI.classList.add('fa-1x')
+        abilityScore.appendChild(fiveI)
       }
-      fiveI.classList.add('fa-1x')
-      abilityScore.appendChild(fiveI)
+      skillHolder.appendChild(abilityScore)
+      starPlacement.appendChild(skillHolder)
+    })
+  }
+
+  function showResume () {
+    resumeClose.style.display = 'block'
+    const aTagButton = document.createElement('a');
+    aTagButton.setAttribute('href',"Pic/MatthewKeigwin.jpg");
+    aTagButton.setAttribute('download', 'MatthewKeigwin');
+    resumeButton.innerHTML = ''
+    aTagButton.innerHTML = "Download Resume";
+    resumeButton.appendChild(aTagButton);
+    starPlacement.style.width = '95%'
+    starPlacement.style.height = '100%'
+    resumeTitle.innerHTML = 'Resume'
+    while (starPlacement.firstChild) {
+      starPlacement.removeChild(starPlacement.firstChild);
     }
-    skillHolder.appendChild(abilityScore)
-    starPlacement.appendChild(skillHolder)
-  })
-  divsInstarPlacement = document.querySelectorAll('.skillHolder')
-}
+    // const closeCoordsX = (starPlacement.getBoundingClientRect().left + starPlacement.getBoundingClientRect().left - resumeClose.getBoundingClientRect().width)
+    // const closeCoordsY = (starPlacement.getBoundingClientRect().top)
+    // resumeClose.style.top = `${closeCoordsY}px`
+    // resumeClose.style.left = `${closeCoordsX}px`
+    setTimeout(() => {
+        starPlacement.style.backgroundImage = 'url(Pic/MatthewKeigwin.jpg)';
+        starPlacement.style.backgroundSize = 'cover'
+        starPlacement.style.backgroundAttachment = 'local'
+        starPlacement.style.overflowY = 'scroll'
+      setTimeout(() => {
+        resumeSizing()
+        starPlacement.appendChild(backgroundScroll)
+      },100)
+    }, 500)
+  }
+
+  function resumeSizing () {
+    starPlacement.style.backgroundSize = 'cover'
+    const imageSrc = starPlacement.style.backgroundImage.replace(/url\((['"])?(.*?)\1\)/gi, '$2').split(',')[0];
+    const image = new Image();
+    image.src = imageSrc;
+    const width = image.width, height = image.height;
+    const widthToHeightVariable = starPlacement.getBoundingClientRect().width/width
+    const adjustedHeight = height*widthToHeightVariable
+    backgroundScroll.style.height = `${adjustedHeight}px`
+    backgroundScroll.style.width = `100%`
+  }
+
+  function closeResume () {
+    starPlacement.style.backgroundImage = ''
+    mappingStar()
+    backgroundScroll.style.height = `0px`
+    backgroundScroll.style.width = `0px`
+    resumeButton.removeChild(resumeButton.firstChild)
+    resumeButton.innerHTML = 'Click here to view full resume'
+    starPlacement.style.width = '50vw'
+    starPlacement.style.height = 'auto'
+    resumeClose.style.display = 'none'
+    resumeTitle.innerHTML = 'Select Skills'
+  }
 
   mappingStar()
   mapGallery()
@@ -349,4 +423,6 @@ function mappingStar() {
   letters.forEach(letter => letter.addEventListener('mouseover', randomLetterColor))
   document.body.addEventListener('click', changeNameColorBack)
   arrowDown.addEventListener('click', () => {scrollTo(document.body, sectionCoords[1], 1250)})
+  resumeButton.addEventListener('click', showResume)
+  resumeClose.addEventListener('click', closeResume)
 })
