@@ -426,11 +426,14 @@ console.log('Get with the times, don\'t use safari!!!!')
   }
 
   function switchAboutInfo () {
+    console.log(headShot2.indexOf("img"))
+
+
     if (headShotState === 'one') {
-      headShot2.forEach(head => head.style.display = 'none')
-      headShot1.forEach(head => head.style.display = 'block')
-      headShotState = 'two'
-      personalButton.innerHTML = 'Professional Info'
+      // headShot2.forEach(head => head.style.display = 'none')
+      // headShot1.forEach(head => head.style.display = 'block')
+      // headShotState = 'two'
+      // personalButton.innerHTML = 'Professional Info'
     } else {
       headShot1.forEach(head => head.style.display = 'none')
       headShot2.forEach(head => head.style.display = 'block')
@@ -448,7 +451,6 @@ console.log('Get with the times, don\'t use safari!!!!')
   navItem.forEach(nav => nav.addEventListener('click', debounce(navClickTransition, 1250)))
   arrows.forEach(arrow => arrow.addEventListener('click', debounce(galleryCounter,visibilityTime)))
   mail.forEach(mail => mail.addEventListener('click', () => location.href = 'mailto:mattkeigwin@gmail.com?subject=MattKeigwin.com Inquiry'))
-  // mail.addEventListener('click', () => location.href = 'mailto:mattkeigwin@gmail.com?subject=MattKeigwin.com Inquiry')
   letters.forEach(letter => letter.addEventListener('mouseover', randomLetterColor))
   document.body.addEventListener('click', changeNameColorBack)
   arrowDown.addEventListener('click', () => {scrollTo(document.body, sectionCoords[1], 1250)})
