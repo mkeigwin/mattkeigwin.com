@@ -426,14 +426,14 @@ console.log('Get with the times, don\'t use safari!!!!')
   }
 
   function switchAboutInfo () {
-    console.log(headShot2.indexOf("img"))
+    // console.log(headShot2.indexOf("img"))
 
 
     if (headShotState === 'one') {
-      // headShot2.forEach(head => head.style.display = 'none')
-      // headShot1.forEach(head => head.style.display = 'block')
-      // headShotState = 'two'
-      // personalButton.innerHTML = 'Professional Info'
+      headShot2.forEach(head => head.style.display = 'none')
+      headShot1.forEach(head => head.style.display = 'block')
+      headShotState = 'two'
+      personalButton.innerHTML = 'Professional Info'
     } else {
       headShot1.forEach(head => head.style.display = 'none')
       headShot2.forEach(head => head.style.display = 'block')
