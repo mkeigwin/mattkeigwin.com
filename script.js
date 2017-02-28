@@ -426,15 +426,27 @@ console.log('Get with the times, don\'t use safari!!!!')
   }
 
   function switchAboutInfo () {
-    // console.log(headShot2.indexOf("img"))
-
 
     if (headShotState === 'one') {
+      const realz = Array.from(headShot2)
+      // const imgIndex = realz.findIndex(function(element) { return element.nodeName === 'IMG' })
+      // headShot2[imgIndex].style.marginLeft = `200px`
+      // console.log(headShot2[imgIndex])
+      // realz.forEach(real => {
+      //   real.style.position = 'absolute'
+      //   real.style.left = real.getBoundingClientRect().left
+      //   real.style.top = real.getBoundingClientRect().top
+      //   fixedDiv.style.display = 'block'
+      // })
+
+
       headShot2.forEach(head => head.style.display = 'none')
       headShot1.forEach(head => head.style.display = 'block')
       headShotState = 'two'
       personalButton.innerHTML = 'Professional Info'
     } else {
+      // const realz = Array.from(headShot1)
+      // const imgIndex = realz.findIndex(function(element) { return element.nodeName === 'IMG' })
       headShot1.forEach(head => head.style.display = 'none')
       headShot2.forEach(head => head.style.display = 'block')
       headShotState = 'one'
