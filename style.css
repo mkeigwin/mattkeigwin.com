@@ -296,6 +296,7 @@ nav a {
   top: 20vh;
   height: 80vh;
   width: 100vw;
+  transition: opacity .2s;
 }
 
 #aboutLeft {
@@ -320,7 +321,7 @@ nav a {
 .headShot {
   height:auto;
   max-width: 45vw;
-  max-height: 70vh
+  max-height: 70vh;
 }
 
 .headShot1 {
@@ -1160,4 +1161,75 @@ nav a {
     font-size: 25px;
     width: 40vw;
   }
+}
+@media screen
+  and (device-width: 360px)
+  and (device-height: 640px)
+  and (-webkit-min-device-pixel-ratio : 4)
+  and (-webkit-device-pixel-ratio : 4)
+  and (orientation: portrait) {
+    * {
+    font-size: 30px;
+  }
+  #title h1 span{
+    display: none;
+  }
+  #title h2{
+    font-size: 45px;
+    top: 50vh;
+  }
+  #title h3{
+    display: block;
+    font-size: 110px;
+  }
+
+  .headShot {
+    padding: 20px 0 20px 0;
+    border-bottom: 20px double black;
+    border-top: 20px double black;
+  }
+
+
+#galleryItems {
+    display: none;
+  }
+  #biggerGallery {
+    flex-direction: column;
+  }
+  .galleryInfo {
+    height: 15vh;
+    width: 75vw;
+    margin-left: 0;
+    margin-top: 1vh;
+  }
+  .projectDetailsShow {
+    height: 15vh;
+    width: 75vw;
+  }
+  #innerGalleryInfo {
+     height: 15vh;
+     width: 75vw;
+  }
+  #gallery {
+    height: 50vh;
+    width: 60vw;
+  }
+  .galleryDiv {
+    height: 50vh;
+    width: 60vw;
+  }
+  #rightArrow, #leftArrow {
+    height: 20%
+  }
+  .aboutMe p{
+    font-size: 40px;
+  }
+  .placeOnImage4 h2 {
+    font-size: 100px;
+  }
+  .myButton a, .myButton{
+    font-size: 25px;
+    width: 40vw;
+  }
+
 }

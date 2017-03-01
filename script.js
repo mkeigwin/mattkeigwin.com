@@ -37,6 +37,8 @@ console.log('Get with the times, don\'t use safari!!!!')
   const personalButton = fixedDiv.querySelector('.myButton')
   const headShot1 = fixedDiv.querySelectorAll('.headShot1')
   const headShot2 = fixedDiv.querySelectorAll('.headShot2')
+  const headShotImage1 = fixedDiv.querySelectorAll('#headPic1')
+  const headShotImage2 = fixedDiv.querySelectorAll('#headPic2')
 
   function mapGallery() {
     const wowz = Array.from(imageItems)
@@ -119,11 +121,10 @@ console.log('Get with the times, don\'t use safari!!!!')
         letter.style.lineHeight =`${oneTenthWidth}px`
       })
     }
-    sectionCoords = []
-    galleryWidth = gallery.offsetWidth
-    sections.forEach(section => {
-      sectionCoords.push(section.offsetTop +.5)
-    })
+    const section2 = oneTenthHeight * 8
+    const section3 = oneTenthHeight * 16
+    const section4 = oneTenthHeight * 24
+    sectionCoords = [0,section2,section3,section4]
     navItem = Array.from(aNav)
     firstNav = navItem[0].offsetLeft
     lastNav = navItem[navItem.length-1].offsetLeft + navItem[navItem.length-1].getBoundingClientRect().width
@@ -426,32 +427,22 @@ console.log('Get with the times, don\'t use safari!!!!')
   }
 
   function switchAboutInfo () {
-
-    if (headShotState === 'one') {
-      const realz = Array.from(headShot2)
-      // const imgIndex = realz.findIndex(function(element) { return element.nodeName === 'IMG' })
-      // headShot2[imgIndex].style.marginLeft = `200px`
-      // console.log(headShot2[imgIndex])
-      // realz.forEach(real => {
-      //   real.style.position = 'absolute'
-      //   real.style.left = real.getBoundingClientRect().left
-      //   real.style.top = real.getBoundingClientRect().top
-      //   fixedDiv.style.display = 'block'
-      // })
-
-
-      headShot2.forEach(head => head.style.display = 'none')
-      headShot1.forEach(head => head.style.display = 'block')
-      headShotState = 'two'
-      personalButton.innerHTML = 'Professional Info'
-    } else {
-      // const realz = Array.from(headShot1)
-      // const imgIndex = realz.findIndex(function(element) { return element.nodeName === 'IMG' })
-      headShot1.forEach(head => head.style.display = 'none')
-      headShot2.forEach(head => head.style.display = 'block')
-      headShotState = 'one'
-      personalButton.innerHTML = 'Personal Info'
-    }
+    fixedDiv.style.opacity = '0'
+    setTimeout(()=> {
+      if (headShotState === 'one') {
+        headShot2.forEach(head => head.style.display = 'none')
+        headShot1.forEach(head => head.style.display = 'block')
+        headShotState = 'two'
+        personalButton.innerHTML = 'Professional Info'
+        fixedDiv.style.opacity = '1'
+      } else {
+        headShot1.forEach(head => head.style.display = 'none')
+        headShot2.forEach(head => head.style.display = 'block')
+        headShotState = 'one'
+        personalButton.innerHTML = 'Personal Info'
+        fixedDiv.style.opacity = '1'
+      }
+    },200)
   }
 
   mappingStar()
