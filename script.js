@@ -125,6 +125,7 @@ console.log('Get with the times, don\'t use safari!!!!')
     const section3 = oneTenthHeight * 16
     const section4 = oneTenthHeight * 24
     sectionCoords = [0,section2,section3,section4]
+    galleryWidth = gallery.offsetWidth
     navItem = Array.from(aNav)
     firstNav = navItem[0].offsetLeft
     lastNav = navItem[navItem.length-1].offsetLeft + navItem[navItem.length-1].getBoundingClientRect().width
