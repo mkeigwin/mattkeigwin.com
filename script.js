@@ -320,7 +320,7 @@ console.log('Get with the times, don\'t use safari!!!!')
   }
 
   let titleCounter = 0
-  const tibits = ['Full Stack Web Developer', 'Bates College Graduate', 'Accepting Freelance Work', 'Would Rather Be Skiing']
+  const tibits = ['Quantitative Analysis', 'Data Scientist', 'Full Stack Web Developer', 'Bates College Graduate', 'Would Rather Be Skiing']
   setTimeout(() => {mySkills.classList.add('flipOut')},2500)
   setInterval(() => {
     titleCounter ++
@@ -337,8 +337,7 @@ console.log('Get with the times, don\'t use safari!!!!')
   }, 3000)
 
   function mappingStar() {
-    // const starData = [{skill:'CSS(3)', star:5},{skill:'HTML(5)', star:5},{skill:'Javascript', star:5},{skill:'Command Line', star:5},{skill:'GitHub', star:5},{skill:'Microsoft Office', star:5},{skill:'JQuery', star:4},{skill:'React', star:4},{skill:'Node.js', star:4},{skill:'Express.js', star:4},{skill:'JSON', star:4},{skill:'MySQL', star:4},{skill:'MongoDB', star:3},{skill:'Redux', star:3},{skill:'Photoshop', star:3},{skill:'Stata', star:2},{skill:'Eviews', star:2},{skill:'Ruby', star:2},{skill:'Rails', star:2}]
-    const starData = [{skill:'CSS(3)', star:5},{skill:'HTML(5)', star:5},{skill:'Javascript', star:5},{skill:'Command Line', star:5},{skill:'JQuery', star:4},{skill:'React', star:4},{skill:'Node.js', star:4},{skill:'Express.js', star:4},{skill:'MySQL', star:4},{skill:'Redux', star:3},{skill:'Photoshop', star:3},{skill:'Ruby', star:2},{skill:'Rails', star:2}]
+    const starData = [{skill:'SQL', star:5},{skill:'Excel', star:5},{skill:'Analytics', star:5},{skill:'Data Visualization', star:5},{skill:'SAS', star:4},{skill:'Python', star:4},{skill:'Scikit-Learn', star:4},{skill:'Javascript', star:4},{skill:'HTML/CSS', star:4}]
 
     starData.forEach(star => {
       const skillHolder = document.createElement("DIV")
