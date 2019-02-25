@@ -218,7 +218,7 @@ console.log('Get with the times, don\'t use safari!!!!')
   function navClickTransition (e) {
     e.preventDefault()
     const targetValue = parseInt(e.target.id)
-    scrollTo(document.body, sectionCoords[targetValue], 1250)
+    scrollTo(document.documentElement, sectionCoords[targetValue], 1250)
   }
 
 //credit for scrolling function to http://stackoverflow.com/questions/8917921/cross-browser-javascript-not-jquery-scroll-to-top-animation
@@ -456,7 +456,7 @@ console.log('Get with the times, don\'t use safari!!!!')
   mail.forEach(mail => mail.addEventListener('click', () => location.href = 'mailto:mattkeigwin@gmail.com?subject=MattKeigwin.com Inquiry'))
   letters.forEach(letter => letter.addEventListener('mouseover', randomLetterColor))
   document.body.addEventListener('click', changeNameColorBack)
-  arrowDown.addEventListener('click', () => {scrollTo(document.body, sectionCoords[1], 1250)})
+  arrowDown.addEventListener('click', () => {scrollTo(document.documentElement, sectionCoords[1], 1250)})
   resumeButton.addEventListener('click', showResume)
   resumeClose.addEventListener('click', closeResume)
   personalButton.addEventListener('click', switchAboutInfo)
